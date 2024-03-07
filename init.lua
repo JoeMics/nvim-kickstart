@@ -169,6 +169,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+-- Formatting
+vim.keymap.set('', '<leader>ff', function()
+  require('conform').format { async = true, lsp_fallback = true }
+end)
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -544,8 +548,22 @@ require('lazy').setup {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
+        tsserver = {
+          init_options = {
+            preferences = {
+              -- Vue + JS will not auto-import properly without this
+              javascript = {
+                importModuleSpecifierPreference = 'non-relative',
+              },
+              typescript = {
+                importModuleSpecifierPreference = 'non-relative',
+              },
+            },
+          },
+        },
+
+        -- NOTE: Changing versions may cause errors on vue 2. 1.8.27 is stable.
+        volar = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -622,6 +640,7 @@ require('lazy').setup {
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { { 'prettierd', 'prettier' } },
+        vue = { 'prettierd', 'prettier' },
       },
     },
   },
@@ -786,7 +805,7 @@ require('lazy').setup {
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'vue' },
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = { enable = true },
