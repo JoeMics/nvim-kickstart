@@ -99,7 +99,7 @@ vim.g.maplocalleader = ' '
 vim.opt.number = true
 -- You can also add relative line numbers, for help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -559,6 +559,13 @@ require('lazy').setup {
         -- NOTE: Changing versions may cause errors on vue 2. 1.8.27 is stable.
         volar = {},
 
+        -- NOTE: I'm not sure if this works but meh
+        pyright = {
+          python = {
+            analysis = { diagnosticMode = 'off', typeCheckingMode = 'off ' },
+          },
+        },
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes { ...},
@@ -757,7 +764,7 @@ require('lazy').setup {
 
   -- unused, but I like them
   { 'ellisonleao/gruvbox.nvim' },
-  { 'catppuccin/nvim', as = 'catppuccin' },
+  { 'catppuccin/nvim', name = 'catppuccin' },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
