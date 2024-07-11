@@ -543,6 +543,13 @@ require('lazy').setup {
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {
+          -- NOTE: Config for volar and tsserver need this configuration to work.
+          -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
+
+          -- NOTE: To enable Hybrid Mode, change hybrideMode to true above and uncomment the following filetypes block.
+          -- WARN: THIS MAY CAUSE HIGHLIGHTING ISSUES WITHIN THE TEMPLATE SCOPE WHEN TSSERVER ATTACHES TO VUE FILES
+          -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+          --
           init_options = {
             preferences = {
               -- Vue + JS will not auto-import properly without this
@@ -552,12 +559,39 @@ require('lazy').setup {
               typescript = {
                 importModuleSpecifierPreference = 'non-relative',
               },
+              plugins = {
+                {
+                  name = '@vue/typescript-plugin',
+                  location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+                  languages = { 'vue' },
+                },
+              },
             },
           },
         },
 
-        -- NOTE: Changing versions may cause errors on vue 2. 1.8.27 is stable.
-        volar = {},
+        -- NOTE: Config for volar and tsserver need this configuration to work. In case of breakage, use 1.8.27
+        -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
+        volar = {
+          -- NOTE: Uncomment to enable volar in file types other than vue.
+          -- (Similar to Takeover Mode)
+
+          -- filetypes = { "vue", "javascript", "typescript", "javascriptreact", "typescriptreact", "json" },
+
+          -- NOTE: Uncomment to restrict Volar to only Vue/Nuxt projects. This will enable Volar to work alongside other language servers (tsserver).
+
+          root_dir = require('lspconfig').util.root_pattern('vue.config.js', 'vue.config.ts', 'nuxt.config.js', 'nuxt.config.ts'),
+          init_options = {
+            vue = {
+              hybridMode = false,
+            },
+            -- NOTE: This might not be needed. Uncomment if you encounter issues.
+
+            -- typescript = {
+            --   tsdk = vim.fn.getcwd() .. "/node_modules/typescript/lib",
+            --
+          },
+        },
 
         -- NOTE: I'm not sure if this works but meh
         pyright = {
@@ -629,10 +663,10 @@ require('lazy').setup {
     'stevearc/conform.nvim',
     opts = {
       notify_on_error = false,
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      -- format_on_save = {
+      --   timeout_ms = 500,
+      --   lsp_fallback = true,
+      -- },
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
