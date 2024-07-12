@@ -706,7 +706,7 @@ require('lazy').setup {
       'hrsh7th/cmp-path',
 
       -- If you want to add a bunch of pre-configured snippets,
-      --    you can use this plugin to help you. It even has snippets
+      --    you can use this plugin to help you. It even has snippetsini
       --    for various frameworks/libraries/etc. but you will have to
       --    set up the ones that are useful for you.
       -- 'rafamadriz/friendly-snippets',
@@ -862,6 +862,17 @@ require('lazy').setup {
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
+  },
+  -- neogen trial
+  {
+    'danymat/neogen',
+    config = function()
+      require('neogen').setup {}
+      -- vim.api.nvim_set_keymap('n', '<Leader>nf', ":lua require('neogen').generate()<CR>", {  })
+      vim.keymap.set('n', '<Leader>nf', ":lua require('neogen').generate()<CR>", { desc = '[N]eogen [F]enerate', noremap = true, silent = true })
+    end,
+    -- Uncomment next line if you want to follow only stable versions
+    version = '*',
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the

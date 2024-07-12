@@ -7,7 +7,9 @@ return {
     'MunifTanjim/nui.nvim',
   },
   config = function()
-    require('neo-tree').setup {}
+    require('neo-tree').setup {
+      hide_hidden = false,
+    }
 
     -- keymaps
     vim.keymap.set('n', '<leader>tt', function()
