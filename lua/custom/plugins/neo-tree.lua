@@ -8,6 +8,7 @@ return {
   },
   config = function()
     require('neo-tree').setup {
+      -- Only works on windows :(
       hide_hidden = false,
     }
 
