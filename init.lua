@@ -558,7 +558,7 @@ require('lazy').setup {
           -- NOTE: To enable Hybrid Mode, change hybrideMode to true above and uncomment the following filetypes block.
           -- WARN: THIS MAY CAUSE HIGHLIGHTING ISSUES WITHIN THE TEMPLATE SCOPE WHEN ts_ls ATTACHES TO VUE FILES
           -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-          --
+
           init_options = {
             preferences = {
               -- Vue + JS will not auto-import properly without this
@@ -682,7 +682,7 @@ require('lazy').setup {
         python = { 'isort', 'black' },
         --
         javascript = { 'prettierd', 'prettier' },
-        typescriptreact= { 'prettierd', 'prettier' },
+        typescriptreact = { 'prettierd', 'prettier' },
         vue = { 'prettierd', 'prettier' },
       },
     },
