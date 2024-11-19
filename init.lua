@@ -550,13 +550,13 @@ require('lazy').setup {
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {
-          -- NOTE: Config for volar and tsserver need this configuration to work.
+        -- But for many setups, the LSP (`ts_ls`) will work just fine
+        ts_ls = {
+          -- NOTE: Config for volar and ts_ls need this configuration to work.
           -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
 
           -- NOTE: To enable Hybrid Mode, change hybrideMode to true above and uncomment the following filetypes block.
-          -- WARN: THIS MAY CAUSE HIGHLIGHTING ISSUES WITHIN THE TEMPLATE SCOPE WHEN TSSERVER ATTACHES TO VUE FILES
+          -- WARN: THIS MAY CAUSE HIGHLIGHTING ISSUES WITHIN THE TEMPLATE SCOPE WHEN ts_ls ATTACHES TO VUE FILES
           -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
           --
           init_options = {
@@ -579,7 +579,7 @@ require('lazy').setup {
           },
         },
 
-        -- NOTE: Config for volar and tsserver need this configuration to work. In case of breakage, use 1.8.27
+        -- NOTE: Config for volar and ts_ls need this configuration to work. In case of breakage, use 1.8.27
         -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
         volar = {
           -- NOTE: Uncomment to enable volar in file types other than vue.
@@ -587,7 +587,7 @@ require('lazy').setup {
 
           -- filetypes = { "vue", "javascript", "typescript", "javascriptreact", "typescriptreact", "json" },
 
-          -- NOTE: Uncomment to restrict Volar to only Vue/Nuxt projects. This will enable Volar to work alongside other language servers (tsserver).
+          -- NOTE: Uncomment to restrict Volar to only Vue/Nuxt projects. This will enable Volar to work alongside other language servers (ts_ls).
 
           root_dir = require('lspconfig').util.root_pattern('vue.config.js', 'vue.config.ts', 'nuxt.config.js', 'nuxt.config.ts'),
           init_options = {
@@ -659,7 +659,7 @@ require('lazy').setup {
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
