@@ -543,7 +543,6 @@ require('lazy').setup {
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -602,10 +601,11 @@ require('lazy').setup {
           },
         },
 
-        -- NOTE: I'm not sure if this works but meh
         pyright = {
-          python = {
-            analysis = { diagnosticMode = 'off', typeCheckingMode = 'off ' },
+          settings = {
+            python = {
+              analysis = { typeCheckingMode = 'off' },
+            },
           },
         },
 
@@ -679,7 +679,7 @@ require('lazy').setup {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        -- python = { 'isort', 'black' },
         --
         javascript = { 'prettierd', 'prettier' },
         typescriptreact = { 'prettierd', 'prettier' },
