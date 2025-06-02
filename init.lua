@@ -855,17 +855,6 @@ require('lazy').setup {
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
-  -- neogen trial
-  {
-    'danymat/neogen',
-    config = function()
-      require('neogen').setup {}
-      -- vim.api.nvim_set_keymap('n', '<Leader>nf', ":lua require('neogen').generate()<CR>", {  })
-      vim.keymap.set('n', '<Leader>nf', ":lua require('neogen').generate()<CR>", { desc = '[N]eogen [F]enerate', noremap = true, silent = true })
-    end,
-    -- Uncomment next line if you want to follow only stable versions
-    version = '*',
-  },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
