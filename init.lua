@@ -300,7 +300,7 @@ require('lazy').setup {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    -- branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for install instructions
@@ -411,41 +411,19 @@ require('lazy').setup {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
+      -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+      -- used for completion, annotations and signatures of Neovim apis
+      'folke/lazydev.nvim',
       -- Automatically install LSPs and related tools to stdpath for neovim
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      'mason-org/mason.nvim',
+      'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-      -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+      -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
-      -- Brief Aside: **What is LSP?**
-      --
-      -- LSP is an acronym you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
@@ -540,24 +518,10 @@ require('lazy').setup {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {
-          -- NOTE: Config for volar and ts_ls need this configuration to work.
-          -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
-
-          -- NOTE: To enable Hybrid Mode, change hybrideMode to true above and uncomment the following filetypes block.
-          -- WARN: THIS MAY CAUSE HIGHLIGHTING ISSUES WITHIN THE TEMPLATE SCOPE WHEN ts_ls ATTACHES TO VUE FILES
-          -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-
+          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
           init_options = {
             preferences = {
               -- Vue + JS will not auto-import properly without this
@@ -568,6 +532,8 @@ require('lazy').setup {
                 importModuleSpecifierPreference = 'non-relative',
               },
               plugins = {
+                -- NOTE: Config for vue_ls and ts_ls need this configuration to work.
+                -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
                 {
                   name = '@vue/typescript-plugin',
                   location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
@@ -578,26 +544,20 @@ require('lazy').setup {
           },
         },
 
-        -- NOTE: Config for volar and ts_ls need this configuration to work. In case of breakage, use 1.8.27
+        -- NOTE: Config for vue_ls and ts_ls need this configuration to work. In case of breakage, use 1.8.27
         -- https://github.com/williamboman/mason-lspconfig.nvim/issues/371#issuecomment-2188015156
-        volar = {
-          -- NOTE: Uncomment to enable volar in file types other than vue.
-          -- (Similar to Takeover Mode)
-
-          -- filetypes = { "vue", "javascript", "typescript", "javascriptreact", "typescriptreact", "json" },
-
-          -- NOTE: Uncomment to restrict Volar to only Vue/Nuxt projects. This will enable Volar to work alongside other language servers (ts_ls).
-
-          root_dir = require('lspconfig').util.root_pattern('vue.config.js', 'vue.config.ts', 'nuxt.config.js', 'nuxt.config.ts'),
+        vue_ls = {
+          filetypes = { 'vue' },
+          -- NOTE: Uncomment to restrict vue_ls to only Vue/Nuxt projects. This will enable vue_ls to work alongside other language servers (ts_ls).
+          -- root_dir = require('lspconfig').util.root_pattern('vue.config.js', 'vue.config.ts', 'nuxt.config.js', 'nuxt.config.ts'),
           init_options = {
             vue = {
               hybridMode = false,
             },
             -- NOTE: This might not be needed. Uncomment if you encounter issues.
-
-            -- typescript = {
-            --   tsdk = vim.fn.getcwd() .. "/node_modules/typescript/lib",
-            --
+            typescript = {
+              tsdk = vim.fn.getcwd() .. '/node_modules/typescript/lib',
+            },
           },
         },
 
@@ -653,18 +613,28 @@ require('lazy').setup {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      if vim.fn.has 'nvim-0.11' == 1 then
+        for server, config in pairs(servers) do
+          config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, config.capabilities or {})
+          vim.lsp.config(server, config)
+          vim.lsp.enable(server)
+        end
+      else
+        require('mason-lspconfig').setup {
+          ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+          automatic_enable = true,
+          handlers = {
+            function(server_name)
+              local server = servers[server_name] or {}
+              -- This handles overriding only values explicitly passed
+              -- by the server configuration above. Useful when disabling
+              -- certain features of an LSP (for example, turning off formatting for ts_ls)
+              server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+              require('lspconfig')[server_name].setup(server)
+            end,
+          },
+        }
+      end
     end,
   },
 
