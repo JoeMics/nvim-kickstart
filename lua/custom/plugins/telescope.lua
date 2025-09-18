@@ -60,6 +60,9 @@ return {
         find_files = {
           find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
         },
+        colorscheme = {
+          enable_preview = true,
+        },
       },
       extensions = {
         ['ui-select'] = {

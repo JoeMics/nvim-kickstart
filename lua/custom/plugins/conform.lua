@@ -13,6 +13,7 @@ return {
       -- python = { 'isort', 'black' },
       --
       javascript = { 'prettierd', 'prettier' },
+      typescript = { 'prettierd', 'prettier' },
       typescriptreact = { 'prettierd', 'prettier' },
       vue = { 'prettierd', 'prettier' },
     },
