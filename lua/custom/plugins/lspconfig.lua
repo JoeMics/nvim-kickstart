@@ -111,6 +111,27 @@ return {
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
     local servers = {
+      cssls = {},
+      emmet_ls = {
+        filetypes = {
+          'astro',
+          'css',
+          'eruby',
+          'html',
+          'htmlangular',
+          'htmldjango',
+          'javascriptreact',
+          'less',
+          'pug',
+          'sass',
+          'scss',
+          'svelte',
+          'templ',
+          'typescriptreact',
+          'vue',
+        },
+      },
+
       ts_ls = {
         filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
         init_options = {
@@ -228,4 +249,3 @@ return {
     end
   end,
 }
-
