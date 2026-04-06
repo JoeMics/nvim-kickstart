@@ -173,6 +173,10 @@ return {
         },
       },
 
+      -- Tailwind CSS autocomplete
+      -- If this doesn't work try installing the LSP with npm: "npm install -g @tailwindcss/language-server"
+      tailwindcss = {},
+
       pyright = {
         settings = {
           python = {
